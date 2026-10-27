@@ -2,6 +2,10 @@
 
 Presentación interactiva en español del esquema real `electrogestion_db`. React, TypeScript, XYFlow, Motion y Tailwind; extractor local Node.js con mysql2 y servicio opcional Express. La publicación es estática y no necesita MySQL.
 
+**Presentación pública:** https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/
+
+Publicada y verificada en navegador el 27 de octubre de 2026: bienvenida, avance y retroceso, diagrama completo y adaptación móvil. No requiere MySQL ni servicios locales.
+
 ## Instalación
 
 Requiere Node.js 22 o posterior y npm. Desde esta carpeta:
@@ -70,11 +74,11 @@ El JSON ya generado permite desarrollar, compilar y presentar con MySQL apagado.
 
 ## GitHub Pages
 
-La publicación requiere aprobación expresa del inventario según la solicitud del propietario. Antes de esa aprobación no se crea un repositorio público ni se sube el esquema.
+El propietario aprobó el inventario y la publicación en el repositorio existente `castilloleongustavo-eng/electrogestion-erd-presentacion` el 27 de octubre de 2026.
 
-Tras aprobar, crear `electrogestion-erd-presentacion` en la cuenta `castilloleongustavo-eng`, subir únicamente los archivos de `INVENTARIO_PUBLICACION.md`, y elegir **Settings → Pages → Source → GitHub Actions**. El flujo `.github/workflows/publicar.yml` instala con npm ci, verifica el modelo, compila y despliega `dist/`. No consulta MySQL ni requiere secretos de base de datos.
+Pages está configurado con **Settings → Pages → Source → GitHub Actions**. El flujo `.github/workflows/publicar.yml` instala con npm ci, verifica el modelo, compila y despliega `dist/` cuando se actualiza `main`. No consulta MySQL ni requiere secretos de base de datos. Para actualizar, regenera el esquema localmente, verifica y sube los cambios al repositorio.
 
-URL prevista (solo será válida después de publicar y verificar):
+URL publicada y verificada:
 
 `https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/`
 

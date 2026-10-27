@@ -10,10 +10,14 @@
 - Compilación servida bajo `/electrogestion-erd-presentacion/`: carga correctamente el JSON estático. No se observaron peticiones al servicio local de metadatos, puerto MySQL ni rutas /api/.
 - Revisión de los archivos preparados: excluidos SQL originales, configuración del editor, .env privados, dependencias y capturas. Sin coincidencias de patrones de tokens GitHub, claves privadas o URI MySQL con contraseña. La plantilla .env.example no contiene secretos.
 
-## Límites y publicación pendiente
+## Límites y publicación verificada
 
 La cuenta local disponible es root; la sesión de extracción se limitó a lectura, pero no se modificaron sus privilegios. Se recomienda configurar una cuenta restringida existente mediante .env para futuras actualizaciones. No se accedió al almacén protegido ni al ERD visual de DBeaver.
 
 La exportación PDF usa el diálogo de impresión del navegador y representa la vista elegida, no toda la secuencia de diapositivas. La exportación PNG/SVG captura la vista actual. La distribución automática puede requerir ajustes manuales para diagramas densos.
 
-El propietario aprobó la publicación del inventario y seleccionó el repositorio existente castilloleongustavo-eng/electrogestion-erd-presentacion el 27 de octubre de 2026. Se conserva su commit inicial. La subida utiliza el conector GitHub autenticado, sin depender de credenciales de CLI. La configuración inicial de Pages requiere seleccionar GitHub Actions en los ajustes del repositorio; el conector no expone esa operación. El despliegue público se considera pendiente hasta verificar el flujo y la URL final.
+El propietario aprobó la publicación del inventario y seleccionó el repositorio existente castilloleongustavo-eng/electrogestion-erd-presentacion el 27 de octubre de 2026. Se conserva su commit inicial. La subida utilizó el conector GitHub autenticado, sin depender de credenciales de CLI. El propietario habilitó GitHub Pages con GitHub Actions.
+
+El flujo https://github.com/castilloleongustavo-eng/electrogestion-erd-presentacion/actions/runs/40585430505 terminó correctamente en su segundo intento: instalación, cinco pruebas, compilación y despliegue aprobados. El primer intento se había detenido porque Pages no estaba habilitado.
+
+La URL https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/ devuelve HTTP 200. Se verificó con Chromium sobre Internet: recursos sin errores HTTP, ausencia de excepciones JavaScript, bienvenida, lienzo vacío, avance, retroceso, 23 entidades, 174 columnas, 30 relaciones, adaptación móvil de 390 px y ausencia de peticiones a localhost, 127.0.0.1 o puertos locales de MySQL/backend. El código desplegado corresponde al commit 8e82d2be5c6c261169265dbe637d57c59136c925. Las capturas de verificación permanecen excluidas en privado/.
