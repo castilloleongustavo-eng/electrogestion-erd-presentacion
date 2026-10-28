@@ -1,6 +1,6 @@
 # Inventario del rediseño en vivo para aprobación
 
-Estado: proyecto electrogestion-erd confirmado por el propietario, con configuración web proporcionada y solicitud de terminar la integración. Firebase real ya está configurado: reglas leídas y verificadas, UID exclusivo del propietario y sincronización de la sesión comprobada con tres navegadores. El propietario indicó continuar con la publicación y entregar los dos enlaces. El primer inicio interactivo con Google se realiza desde el control publicado.
+Estado: proyecto electrogestion-erd confirmado por el propietario, con configuración web proporcionada y solicitud de terminar la integración. Firebase real ya está configurado: reglas leídas y verificadas, UID exclusivo del propietario y sincronización de la sesión comprobada con tres navegadores. El propietario indicó continuar con la publicación y entregar los dos enlaces. Ambas rutas fueron publicadas y verificadas; el propietario confirmó el inicio con Google y el avance desde el control, y Firebase registró su acceso web.
 
 Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-erd-presentacion y las rutas #/control y #/presentacion de una sola aplicación. Única sesión global electrogestion.
 
@@ -66,8 +66,8 @@ No se suben notas privadas, borradores, credenciales o configuración administra
 
 Las notas reales se alojarán en privado/electrogestion/notas dentro de RTDB, con lectura y escritura exclusiva del UID autorizado. Nunca se incorporan a archivos estáticos ni al estado público.
 
-## Servicios y comprobaciones pendientes
+## Servicios configurados y mantenimiento
 
-No se crea un repositorio ni una segunda sesión. Antes de configurar el Firebase real se necesita identificar el proyecto y el presentador y autorizar la publicación de reglas/configuración. Deben conservarse reglas/datos existentes ajenos a esta aplicación y verificarse permisos reales y sincronización en redes diferentes antes de desplegar. Ver PUESTA_EN_MARCHA_FIREBASE.md y VERIFICACION.md.
+No se crea un repositorio ni una segunda sesión. El Firebase real electrogestion-erd quedó configurado con el único UID autorizado y las reglas verificadas. En futuras modificaciones deben conservarse reglas y datos ajenos a esta aplicación. Se probaron sesiones de navegador independientes contra la nube; no se probó directamente un teléfono físico en otra red. Ver PUESTA_EN_MARCHA_FIREBASE.md y VERIFICACION.md.
 
 Total de archivos preparados: 47.

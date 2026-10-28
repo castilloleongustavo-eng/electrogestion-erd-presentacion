@@ -1,6 +1,6 @@
 # Verificación del rediseño en vivo
 
-Fecha: 27 de octubre de 2026. Estado: Firebase real configurado y sincronización en la nube verificada; publicación en curso; acceso interactivo Google reservado al primer uso del propietario.
+Fecha: 27 de octubre de 2026. Estado: Firebase real configurado y sincronización en la nube verificada; publicación verificada; acceso interactivo Google confirmado por el propietario y por Firebase.
 
 ## Modelo y base original
 
@@ -23,8 +23,21 @@ Fecha: 27 de octubre de 2026. Estado: Firebase real configurado y sincronizació
 
 El propietario autenticó Firebase CLI con su cuenta Google. Se verificó que la aplicación web pertenece a electrogestion-erd y que el JSON coincide con la configuración oficial. La base estaba vacía y las reglas originales denegaban todo; se conservaron como respaldo privado. Google estaba habilitado y los dominios localhost y GitHub Pages ya autorizados. Se registró únicamente la cuenta Google verificada del propietario, se asignó su UID al control exclusivo, se aplicaron las reglas y se compararon por lectura directa con las revisadas. Se inicializó exclusivamente sesiones/electrogestion/publico. No se habilitó facturación ni se modificaron roles IAM.
 
-La prueba adicional con tres navegadores aislados contra Firebase real pasó: avance, retroceso, zoom, selección de entidad/campo/relación, visibilidades, incorporación tardía, recarga, desconexión/reconexión, reproducción y diagrama completo. Los comandos de esta prueba procedían del cliente administrativo autorizado; no se presentan como clics del panel de control. La escritura anónima y las lecturas de notas y autorización fueron rechazadas con HTTP 401. El estado público no contenía la nota de prueba, eliminada tras verificarla. La sesión quedó reiniciada. El propietario indicó continuar con la publicación y entrega de los dos enlaces. El acceso Google y una acción del panel en su navegador se comprobarán en el primer uso y no se presentan como una prueba ya realizada. No se ha probado un teléfono físico en una red móvil distinta.
+La prueba adicional con tres navegadores aislados contra Firebase real pasó: avance, retroceso, zoom, selección de entidad/campo/relación, visibilidades, incorporación tardía, recarga, desconexión/reconexión, reproducción y diagrama completo. Los comandos de esta prueba procedían del cliente administrativo autorizado; no se presentan como clics del panel de control. La escritura anónima y las lecturas de notas y autorización fueron rechazadas con HTTP 401. El estado público no contenía la nota de prueba, eliminada tras verificarla. La sesión quedó reiniciada. El propietario indicó continuar con la publicación y entrega de los dos enlaces. El propietario confirmó manualmente el acceso Google y el avance desde el panel; Authentication registró el inicio web con el UID correcto. No se ha probado un teléfono físico en una red móvil distinta.
 
-Se continúa el despliegue autorizado en el repositorio existente. Las rutas se comprobarán sobre GitHub Pages antes de confirmar que quedaron publicadas. El validador estructural acepta el JSON proporcionado; esto no sustituye la comprobación de reglas, identidad y sincronización del proyecto real.
+El despliegue autorizado terminó en el repositorio existente. Ambas rutas se comprobaron sobre GitHub Pages y quedaron publicadas. El validador estructural acepta el JSON proporcionado; esto no sustituye la comprobación de reglas, identidad y sincronización del proyecto real.
 
 Consultar `PUESTA_EN_MARCHA_FIREBASE.md` para los accesos necesarios y la comprobación real. El inventario del rediseño fue preparado y el propietario indicó continuar hasta publicar y entregar los dos enlaces.
+## Publicación final verificada
+
+- GitHub Actions terminó correctamente: https://github.com/castilloleongustavo-eng/electrogestion-erd-presentacion/actions/runs/40608030265 . Pasaron instalación, 12 pruebas del modelo/estado, 6 pruebas de reglas en emulador, validación de configuración, compilación y despliegue.
+- Código desplegado: 4ea335b18abae30eec483e63f76573aa651a9ba6.
+- Control: https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/#/control . HTTP 200; muestra acceso con Google; el visitante anónimo no ve navegación privada ni notas. Vista móvil de 390 px sin desbordamiento.
+- Presentación: https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/#/presentacion . HTTP 200; conexión a Firebase real; sin botones, menús, inputs, notas ni herramientas administrativas. Recursos sin errores HTTP ni excepciones JavaScript durante la comprobación.
+- Se repitió la prueba de sincronización con tres navegadores sobre las páginas públicas de GitHub Pages, usando comandos administrativos de prueba: etapas, foco, zoom, campos, columnas, relaciones, incorporación tardía, recarga, reconexión y reproducción. Se mantuvo una sola sesión. Se verificaron las 23 entidades, 174 columnas y 30 relaciones en la vista completa.
+- Las lecturas anónimas de notas y autorización siguieron rechazadas con HTTP 401, al igual que la escritura anónima del estado. No hubo peticiones a localhost, MySQL o al backend local desde las páginas publicadas.
+- El propietario confirmó que entró con Google y pulsó Siguiente en el control. Se comprobó después que Authentication registró el acceso web y que el UID coincidía con el único presentador autorizado. Esta validación manual se distingue de la automatización de los comandos administrativos.
+- Se eliminó exclusivamente la nota temporal generada por las pruebas, conservando cualquier nota previa. La sesión quedó reiniciada en pantalla inicial, etapa 0, revisión 44 al cerrar las pruebas. Las revisiones posteriores dependen del uso del presentador.
+- Las pruebas y capturas con credenciales o contexto administrativo permanecen excluidas en privado/. No se modificó MySQL, no se habilitó facturación y no se crearon sesiones ni repositorios adicionales.
+
+El uso desde un teléfono físico en una red móvil distinta no se comprobó directamente; el sistema publicado utiliza Firebase por Internet y no depende de la computadora de desarrollo.

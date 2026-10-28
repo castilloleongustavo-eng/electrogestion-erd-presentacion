@@ -5,7 +5,7 @@ Una sola aplicación React, un repositorio, dos enlaces y la única sesión glob
 - **Pantalla pública:** `#/presentacion` muestra exclusivamente el ERD y las explicaciones activadas. No contiene botones, menús, edición, notas ni controles de zoom.
 - **Control del presentador:** `#/control` requiere Firebase Authentication y autorización del UID en las reglas. Incluye navegación, reproducción, zoom proporcional, enfoque, entidades, campos, relaciones, columnas, animaciones, explicaciones, notas privadas y exportación de la vista.
 
-**Estado del rediseño:** Firebase real electrogestion-erd está configurado, con Google Authentication, UID exclusivo del propietario, reglas instaladas y verificadas y la única sesión electrogestion inicializada. La sincronización y privacidad pasaron pruebas con tres navegadores contra la nube. Se continúa con GitHub Pages para entregar ambos enlaces. El flujo interactivo de Google en el navegador del propietario se realiza en su primer acceso; no se presenta como una prueba automatizada ya realizada.
+**Estado del rediseño:** Firebase real electrogestion-erd está configurado, con Google Authentication, UID exclusivo del propietario, reglas instaladas y verificadas y la única sesión electrogestion inicializada. La sincronización y privacidad pasaron pruebas con tres navegadores contra la nube. Ambas rutas están publicadas y verificadas en GitHub Pages. El propietario confirmó el acceso con Google y el avance desde el control; Firebase registró ese inicio de sesión con el UID autorizado. La prueba interactiva del propietario fue manual, mientras que las pruebas de sincronización y privacidad se ejecutaron también automáticamente.
 
 ## Instalación y compilación
 

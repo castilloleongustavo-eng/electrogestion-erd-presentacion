@@ -69,7 +69,7 @@ Con la configuración pública y las reglas aplicadas, abrir `#/control`, accede
 - Revisar que no haya controles ni notas en el DOM público y que las notas no formen parte del objeto público de RTDB.
 - Revisar inventario, reglas de la instancia real y `npm run verificar:publicacion`; entonces autorizar la publicación.
 
-Además de las pruebas con emuladores, se verificó la sincronización de Firebase real con tres navegadores, el rechazo de escritura anónima, la privacidad de notas y las reglas por lectura administrativa. Los comandos de la prueba de nube fueron enviados por el cliente administrativo autorizado. El acceso interactivo de Google del propietario y un teléfono físico con otra red no se automatizaron; corresponden a su primer uso. La publicación se verifica también visitando ambos enlaces después de GitHub Actions.
+Además de las pruebas con emuladores, se verificó la sincronización de Firebase real con tres navegadores, el rechazo de escritura anónima, la privacidad de notas y las reglas por lectura administrativa. Los comandos de la prueba de nube fueron enviados por el cliente administrativo autorizado. El propietario confirmó manualmente el acceso con Google y un avance desde el control; Authentication registró el inicio de sesión con el UID autorizado. No se automatizó ese flujo interactivo ni se probó un teléfono físico en otra red. Ambos enlaces quedaron verificados en navegador después del despliegue correcto de GitHub Actions.
 
 ## Publicación
 
