@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   connectAuthEmulator,
-  browserSessionPersistence,
+  browserLocalPersistence,
   setPersistence,
 } from "firebase/auth";
 import { getDatabase, connectDatabaseEmulator } from "firebase/database";
@@ -50,7 +50,9 @@ export async function conectarFirebase() {
     });
     connectDatabaseEmulator(db, "127.0.0.1", 9000);
   }
-  await setPersistence(auth, browserSessionPersistence);
+  // Conserva el acceso al cerrar y volver a abrir el navegador.
+  // Firebase renueva los tokens; la autorización del UID sigue en las reglas.
+  await setPersistence(auth, browserLocalPersistence);
   return { auth, db, pruebas };
 }
 export type Servicios = Awaited<ReturnType<typeof conectarFirebase>>;

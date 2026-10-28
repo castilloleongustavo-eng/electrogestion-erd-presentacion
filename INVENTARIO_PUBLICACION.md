@@ -78,3 +78,5 @@ No se crea un repositorio ni una segunda sesión. El Firebase real electrogestio
 La actualización del panel añade controles flotantes, cámara compartida con coordenadas normalizadas y contexto privado de la etapa. No cambia las reglas, la autenticación, el esquema ni las etapas. Se verificaron mouse y gestos táctiles emulados en navegadores independientes.
 
 Total de archivos preparados: 52.
+
+El ajuste de duración del acceso cambia únicamente la persistencia del cliente Firebase a local, sus pruebas y documentación. No incorpora tokens ni perfiles de navegador; el perfil temporal de la prueba se guarda en privado/ y se elimina al finalizar.

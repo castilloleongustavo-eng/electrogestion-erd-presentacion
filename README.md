@@ -45,6 +45,8 @@ Se conserva el generador de 259 etapas y el esquema de 23 tablas, 174 columnas y
 
 ## Estado global y reconexión
 
+El acceso del presentador se recuerda en el mismo navegador al recargar, cerrar la pestaña o reiniciar el navegador mediante persistencia local de Firebase Authentication. No hay cierre por inactividad en la aplicación. «Cerrar sesión» elimina ese acceso recordado. Borrar los datos del navegador, usar navegación privada o revocar el acceso puede requerir iniciar sesión otra vez. La sesión global y su última etapa permanecen en Firebase independientemente de que el presentador esté conectado.
+
 El estado público reside exclusivamente en `sesiones/electrogestion/publico`. Las notas usan `privado/electrogestion/notas/{etapa}` y nunca forman parte del estado público. No se concede lectura del árbol completo.
 
 Cada comando usa una transacción con revisión esperada e incremento de uno, sin mostrar eventos optimistas como confirmados. Si otro control del mismo propietario avanzó, el comando antiguo se aborta. Los clientes ignoran revisiones anteriores. Las reglas validan campos, rangos, modelo y vencimiento de comandos; los botones quedan bloqueados sin conexión.

@@ -41,6 +41,12 @@ Consultar `PUESTA_EN_MARCHA_FIREBASE.md` para los accesos necesarios y la compro
 - Las pruebas y capturas con credenciales o contexto administrativo permanecen excluidas en privado/. No se modificó MySQL, no se habilitó facturación y no se crearon sesiones ni repositorios adicionales.
 
 El uso desde un teléfono físico en una red móvil distinta no se comprobó directamente; el sistema publicado utiliza Firebase por Internet y no depende de la computadora de desarrollo.
+## Acceso persistente del presentador
+
+- Firebase Authentication utiliza persistencia local en lugar de persistencia de pestaña. La aplicación no aplica cierre por inactividad; se conserva el acceso en el mismo navegador hasta cerrar sesión, borrar sus datos o revocar la cuenta.
+- Se verificó con Auth/RTDB emulados y un perfil real de Chromium: iniciar sesión, cerrar por completo el proceso, abrir de nuevo y recuperar el control sin introducir credenciales; cerrar sesión explícitamente y comprobar que al reiniciar se solicita acceso. La única sesión global conservó su estado entre aperturas.
+- No se modifican reglas, usuarios autorizados, notas ni estado del proyecto Firebase real para esta actualización.
+
 ## Actualización de controles flotantes y contexto privado
 
 - 16 pruebas del modelo, estado, contexto y geometría aprobadas. Las 259 etapas tienen descripción y objetivo; los nombres destacados se validan contra el esquema real. La cámara conserva centro y factor relativo al pasar de 390 px a resoluciones de proyector, sin coordenadas de pantalla en Firebase.

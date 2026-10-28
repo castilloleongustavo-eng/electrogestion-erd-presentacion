@@ -73,6 +73,8 @@ Además de las pruebas con emuladores, se verificó la sincronización de Fireba
 
 ## Publicación
 
+El panel conserva el inicio de sesión en el mismo navegador mediante persistencia local de Firebase Authentication, incluso después de cerrarlo y volverlo a abrir. No aplica un tiempo de cierre por inactividad. El botón «Cerrar sesión» sigue disponible y elimina el acceso recordado; borrar los datos del navegador o revocar el acceso también puede exigir entrar otra vez. La única sesión global conserva su estado aunque se cierre el control.
+
 Se mantiene GitHub Pages. Las rutas finales serán:
 
 - Control protegido por Authentication: `https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/#/control`

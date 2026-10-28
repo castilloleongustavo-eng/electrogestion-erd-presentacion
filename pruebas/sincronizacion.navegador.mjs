@@ -1,7 +1,7 @@
 import { chromium, expect } from "@playwright/test";
 import "firebase/compat/database";
 import { initializeTestEnvironment } from "@firebase/rules-unit-testing";
-import { readFile, mkdir } from "node:fs/promises";
+import { readFile, mkdir, rm } from "node:fs/promises";
 import { createServer } from "node:http";
 import { resolve, extname, sep } from "node:path";
 import { randomUUID } from "node:crypto";
@@ -82,8 +82,40 @@ const servidor = createServer(async (req, res) => {
 });
 await new Promise((r) => servidor.listen(4180, "127.0.0.1", r));
 const b = await chromium.launch();
+const perfilPersistente = resolve("privado", `prueba-persistencia-${randomUUID()}`);
+let navegadorPersistente;
 let codigoError;
 try {
+  // Un perfil real conserva IndexedDB/localStorage entre procesos del navegador.
+  // Comprueba también que la salida explícita no se restaure al volver a abrir.
+  for (const fase of ["acceder", "restaurar", "comprobar salida"]) {
+    navegadorPersistente = await chromium.launchPersistentContext(perfilPersistente, {
+      headless: true,
+      viewport: { width: 390, height: 844 },
+    });
+    const pagina = await navegadorPersistente.newPage();
+    await pagina.goto(origen + "#/control");
+    if (fase === "acceder") {
+      await pagina.getByRole("textbox", { name: "Correo de prueba" }).fill(email);
+      await pagina.getByLabel("Contraseña de prueba").fill(password);
+      await pagina.getByRole("button", { name: "Entrar al emulador" }).click();
+      await pagina.getByRole("button", { name: "Inicializar sesión global" }).click();
+    }
+    if (fase !== "comprobar salida") {
+      await expect(pagina.getByRole("button", { name: "Siguiente", exact: true })).toBeEnabled();
+      await expect(pagina.getByRole("button", { name: "Continuar con Google" })).toHaveCount(0);
+      if (fase === "restaurar") {
+        await pagina.getByRole("button", { name: "Cerrar sesión", exact: true }).click();
+        await expect(pagina.getByRole("button", { name: "Continuar con Google" })).toBeVisible();
+      }
+    } else {
+      await expect(pagina.getByRole("button", { name: "Continuar con Google" })).toBeVisible();
+      await expect(pagina.getByRole("button", { name: "Inicializar sesión global" })).toHaveCount(0);
+    }
+    await navegadorPersistente.close();
+    navegadorPersistente = undefined;
+  }
+  console.log("Persistencia verificada al reiniciar Chromium; cerrar sesión elimina el acceso recordado.");
   const controlador = await b.newContext({
       viewport: { width: 390, height: 844 },
       hasTouch: true,
@@ -109,9 +141,6 @@ try {
   await control.getByRole("textbox", { name: "Correo de prueba" }).fill(email);
   await control.getByLabel("Contraseña de prueba").fill(password);
   await control.getByRole("button", { name: "Entrar al emulador" }).click();
-  await control
-    .getByRole("button", { name: "Inicializar sesión global" })
-    .click();
   await expect(
     control.getByRole("button", { name: "Siguiente", exact: true }),
   ).toBeEnabled();
@@ -460,6 +489,10 @@ try {
 } catch (e) {
   codigoError = e;
 } finally {
+  await navegadorPersistente?.close();
+  if (!perfilPersistente.startsWith(resolve("privado") + sep))
+    throw Error("Perfil de prueba fuera de la carpeta privada.");
+  await rm(perfilPersistente, { recursive: true, force: true });
   await b.close();
   await entorno.cleanup();
   await new Promise((r) => servidor.close(r));
