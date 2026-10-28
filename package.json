@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/preparar-modelo.mjs \u0026\u0026 tsc --noEmit \u0026\u0026 vite build",
+    "build:pruebas": "node scripts/preparar-modelo.mjs \u0026\u0026 tsc --noEmit \u0026\u0026 vite build --mode pruebas --outDir dist-pruebas",
     "preview": "vite preview --host 127.0.0.1",
     "actualizar-esquema": "node servidor/actualizar-esquema.mjs",
     "servidor": "node servidor/index.mjs",
     "test": "node --test pruebas/*.test.mjs",
-    "test:navegador": "node pruebas/navegador.mjs"
+    "test:navegador": "node pruebas/sincronizacion.navegador.mjs",
+    "test:reglas": "firebase emulators:exec --only database --project demo-electrogestion \"node --test pruebas/firebase.reglas.mjs\"",
+    "test:sincronizacion": "firebase emulators:exec --only auth,database --project demo-electrogestion \"node pruebas/sincronizacion.navegador.mjs\"",
+    "verificar:publicacion": "node scripts/verificar-configuracion.mjs"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.5",
@@ -18,21 +22,37 @@
     "@xyflow/react": "^12.8.0",
     "dotenv": "^16.6.0",
     "express": "^5.1.0",
+    "firebase": "^12.19.0",
     "html-to-image": "^1.11.13",
     "lucide-react": "^0.468.0",
     "motion": "^12.0.0",
     "mysql2": "^3.14.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.18.5",
     "tailwindcss": "^4.1.0"
   },
+  "engines": {
+    "node": "\u003e=24.12.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6",
+    "@opentelemetry/core": "^2.8.0",
+    "gaxios": {
+      "uuid": "^11.1.1"
+    },
+    "@firebase/app": "0.16.2",
+    "@firebase/app-compat": "0.5.18"
+  },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "@playwright/test": "^1.56.0",
     "@types/dagre": "^0.7.53",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "firebase-tools": "^15.34.1",
     "typescript": "^5.9.0",
-    "vite": "^6.3.0",
-    "@playwright/test": "^1.56.0"
+    "vite": "^6.3.0"
   }
 }

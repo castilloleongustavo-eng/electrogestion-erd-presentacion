@@ -1,0 +1,99 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "autorizacion": {
+      ".read": "auth != null && auth.uid === data.child('presentadorUid').val()",
+      ".write": false
+    },
+    "sesiones": {
+      "electrogestion": {
+        "publico": {
+          ".read": true,
+          ".write": "auth != null && auth.uid === root.child('autorizacion/presentadorUid').val() && newData.exists()",
+          ".validate": "newData.hasChildren(['formato','revision','modelo','paso','pantalla','columnas','relaciones','enfoque','claves','animaciones','explicaciones','indicador','tabla','campo','relacion','foco','camara','reproduccion','solicitadoEn','actualizadoEn','actualizadoPor'])",
+          "formato": { ".validate": "newData.val() === 1" },
+          "revision": {
+            ".validate": "newData.isNumber() && newData.val() % 1 === 0 && ((!data.exists() && newData.val() === 1) || (data.exists() && newData.val() === data.val() + 1))"
+          },
+          "modelo": {
+            ".validate": "newData.isString() && newData.val() === root.child('autorizacion/modelo').val()"
+          },
+          "paso": {
+            ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() < root.child('autorizacion/totalEtapas').val()"
+          },
+          "pantalla": {
+            ".validate": "newData.val() === 'inicio' || newData.val() === 'diagrama'"
+          },
+          "columnas": { ".validate": "newData.isBoolean()" },
+          "relaciones": { ".validate": "newData.isBoolean()" },
+          "enfoque": { ".validate": "newData.isBoolean()" },
+          "claves": { ".validate": "newData.isBoolean()" },
+          "animaciones": { ".validate": "newData.isBoolean()" },
+          "explicaciones": { ".validate": "newData.isBoolean()" },
+          "indicador": { ".validate": "newData.isBoolean()" },
+          "tabla": {
+            ".validate": "newData.isString() && newData.val().length <= 200"
+          },
+          "campo": {
+            ".validate": "newData.isString() && newData.val().length <= 200"
+          },
+          "relacion": {
+            ".validate": "newData.isString() && newData.val().length <= 200"
+          },
+          "foco": {
+            ".validate": "newData.val() === 'automatico' || newData.val() === 'tabla' || newData.val() === 'relacion' || newData.val() === 'completo'"
+          },
+          "camara": {
+            ".validate": "newData.hasChildren(['x','y','zoom'])",
+            "x": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+            },
+            "y": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+            },
+            "zoom": {
+              ".validate": "newData.isNumber() && newData.val() >= 0.25 && newData.val() <= 4"
+            },
+            "$otro": { ".validate": false }
+          },
+          "reproduccion": {
+            ".validate": "newData.hasChildren(['activa','desdePaso','desdeServidor','intervaloMs'])",
+            "activa": { ".validate": "newData.isBoolean()" },
+            "desdePaso": {
+              ".validate": "newData.isNumber() && newData.val() % 1 === 0 && newData.val() >= 0 && newData.val() < root.child('autorizacion/totalEtapas').val()"
+            },
+            "desdeServidor": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= now + 2000"
+            },
+            "intervaloMs": {
+              ".validate": "newData.isNumber() && newData.val() >= 1000 && newData.val() <= 60000"
+            },
+            "$otro": { ".validate": false }
+          },
+          "solicitadoEn": {
+            ".validate": "newData.isNumber() && newData.val() >= now - 10000 && newData.val() <= now + 2000"
+          },
+          "actualizadoEn": {
+            ".validate": "newData.isNumber() && newData.val() >= now - 10000 && newData.val() <= now"
+          },
+          "actualizadoPor": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "$otro": { ".validate": false }
+        }
+      }
+    },
+    "privado": {
+      "electrogestion": {
+        "notas": {
+          ".read": "auth != null && auth.uid === root.child('autorizacion/presentadorUid').val()",
+          "$paso": {
+            ".write": "auth != null && auth.uid === root.child('autorizacion/presentadorUid').val() && newData.exists()",
+            ".validate": "$paso.matches(/^[0-9]+$/) && newData.isString() && newData.val().length <= 20000"
+          }
+        }
+      }
+    }
+  }
+}

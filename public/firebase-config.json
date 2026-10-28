@@ -1,0 +1,8 @@
+{
+  "habilitado": true,
+  "apiKey": "AIzaSyAcSuvIg-yYAzckneXbb22xSHNmEUcNpmw",
+  "authDomain": "electrogestion-erd.firebaseapp.com",
+  "databaseURL": "https://electrogestion-erd-default-rtdb.firebaseio.com",
+  "projectId": "electrogestion-erd",
+  "appId": "1:898811960537:web:6386e3c30491a6755df2c8"
+}

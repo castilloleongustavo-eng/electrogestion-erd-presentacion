@@ -1,8 +1,8 @@
-# Inventario para aprobación de publicación
+# Inventario del rediseño en vivo para aprobación
 
-Destino propuesto: repositorio público castilloleongustavo-eng/electrogestion-erd-presentacion y GitHub Pages.
+Estado: proyecto electrogestion-erd confirmado por el propietario, con configuración web proporcionada y solicitud de terminar la integración. Firebase real ya está configurado: reglas leídas y verificadas, UID exclusivo del propietario y sincronización de la sesión comprobada con tres navegadores. El propietario indicó continuar con la publicación y entregar los dos enlaces. El primer inicio interactivo con Google se realiza desde el control publicado.
 
-La publicación de este inventario fue aprobada expresamente por el propietario el 27 de octubre de 2026, quien indicó utilizar el repositorio existente castilloleongustavo-eng/electrogestion-erd-presentacion.
+Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-erd-presentacion y las rutas #/control y #/presentacion de una sola aplicación. Única sesión global electrogestion.
 
 ## Archivos incluidos
 
@@ -10,36 +10,64 @@ La publicación de este inventario fue aprobada expresamente por el propietario 
 - .github/workflows/publicar.yml
 - .gitignore
 - ANALISIS_ESQUEMA.md
+- firebase.json
+- firebase/database.rules.json
 - index.html
 - iniciar.ps1
 - INVENTARIO_PUBLICACION.md
 - package.json
 - package-lock.json
+- pruebas/estado.test.mjs
+- pruebas/firebase.reglas.mjs
 - pruebas/modelo.test.mjs
-- pruebas/navegador.mjs
+- pruebas/sincronizacion.navegador.mjs
 - public/esquema_erd.json
+- public/firebase-config.json
+- PUESTA_EN_MARCHA_FIREBASE.md
 - README.md
+- scripts/preparar-autorizacion.mjs
+- scripts/preparar-modelo.mjs
+- scripts/verificar-configuracion.mjs
 - servidor/actualizar-esquema.mjs
 - servidor/index.mjs
 - servidor/metadatos.mjs
+- src/componentes/animaciones/Entidad.tsx
+- src/componentes/controles/Notas.tsx
+- src/componentes/diagrama/Diagrama.tsx
+- src/componentes/diagrama/Explicacion.tsx
+- src/componentes/diagrama/geometria.mjs
+- src/datos/modelo.json
 - src/estilos.css
+- src/estilos/vivo.css
 - src/main.tsx
+- src/modelos/esquema.ts
+- src/modelos/estado.mjs
+- src/modelos/estado.ts
 - src/modelos/presentacion.mjs
+- src/paginas/control/Control.tsx
+- src/paginas/presentacion/Presentacion.tsx
+- src/servicios/autenticacion/usePresentador.ts
+- src/servicios/sincronizacion/firebase.ts
+- src/servicios/sincronizacion/useSesion.ts
 - src/vite-env.d.ts
 - tsconfig.json
 - VERIFICACION.md
 - vite.config.ts
 
-## Contenido del esquema
+## Información que se hará pública
 
-public/esquema_erd.json contiene nombres de las 23 tablas reales, 174 columnas con tipos y nulabilidad, índices, 30 FK, reglas referenciales, cardinalidades verificadas, una asociación N:M respaldada por inventario, explicaciones ilustrativas y 259 etapas. Publicarlo hará visible esta estructura. No contiene filas de negocio ni credenciales.
+Código de las dos interfaces, reglas Firebase, pruebas, documentación y metadatos del mismo esquema ya aprobado. La configuración web incluye exclusivamente los identificadores Firebase proporcionados por el propietario para electrogestion-erd, cuya exposición al navegador es necesaria. La seguridad se aplica en Authentication y reglas, no ocultando ese archivo. El estado público incluye etapa, opciones, selección, cámara, reloj/revisión y UID técnico de quien confirmó el cambio.
+
+El formulario de acceso al emulador solo puede funcionar en compilación de pruebas, loopback y proyecto demo. Sus contraseñas temporales se generan aleatoriamente durante la prueba y no están incluidas en el código. No existe contraseña fija del presentador.
 
 ## Exclusiones
 
-No se subirán .vscode/, electrogestion_db/ (SQL originales), .env ni variantes privadas, node_modules/, dist/, privado/ (capturas), registros de ejecución ni configuraciones de DBeaver. .env.example es una plantilla sin contraseñas.
+No se suben notas privadas, borradores, credenciales o configuración administrativa Firebase, archivos de cuentas de servicio, tokens, .env privados, .firebaserc, .vscode/, SQL originales de electrogestion_db/, node_modules/, dist/, dist-pruebas/, logs, capturas ni privado/.
 
-## Despliegue
+Las notas reales se alojarán en privado/electrogestion/notas dentro de RTDB, con lectura y escritura exclusiva del UID autorizado. Nunca se incorporan a archivos estáticos ni al estado público.
 
-GitHub Actions compilará el JSON estático con npm ci, npm test y npm run build. No conectará a MySQL. GitHub CLI requiere iniciar sesión antes de crear el repositorio.
+## Servicios y comprobaciones pendientes
 
-URL prevista, todavía no publicada: https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/
+No se crea un repositorio ni una segunda sesión. Antes de configurar el Firebase real se necesita identificar el proyecto y el presentador y autorizar la publicación de reglas/configuración. Deben conservarse reglas/datos existentes ajenos a esta aplicación y verificarse permisos reales y sincronización en redes diferentes antes de desplegar. Ver PUESTA_EN_MARCHA_FIREBASE.md y VERIFICACION.md.
+
+Total de archivos preparados: 47.

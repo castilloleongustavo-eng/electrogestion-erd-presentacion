@@ -1,23 +1,30 @@
-# Verificación local · 27 de octubre de 2026
+# Verificación del rediseño en vivo
 
-- Extracción correcta de la base activa: 23 tablas, 174 columnas, 30 claves foráneas declaradas y 259 etapas. Consultas exclusivamente a INFORMATION_SCHEMA, en sesión de lectura; sin ejecución de los SQL originales.
-- La captura SQL local contiene también 30 restricciones FK. La lista y los campos están documentados en ANALISIS_ESQUEMA.md.
-- `npm test`: cinco pruebas aprobadas para integridad de las relaciones, totalidad del recorrido, restauración de estados, orden manual y ausencia de campos de secretos/registros en el JSON.
-- `npm run build`: TypeScript y compilación Vite aprobados. Vite avisa de un paquete JavaScript mayor de 500 kB (aproximadamente 202 kB comprimido); no impide compilar.
-- Chromium / Playwright sobre la compilación estática: recorrido de las 259 etapas hacia adelante y hacia atrás, comprobando en cada estado las tablas y columnas visibles. Al finalizar aparecen las 23 entidades, 174 columnas y 30 conexiones. Sin excepciones de JavaScript en ese recorrido.
-- Pruebas de controles en Chromium: detalle de columna, mostrar/ocultar atributos, flecha de teclado, exportaciones descargadas PNG y SVG, modo enfoque y entrada a pantalla completa.
-- Capturas revisadas de bienvenida en escritorio y móvil; comprobación automática de ausencia de desbordamiento horizontal en móvil de 390 px. Las capturas y exportaciones permanecen en privado/, excluido de Git.
-- Compilación servida bajo `/electrogestion-erd-presentacion/`: carga correctamente el JSON estático. No se observaron peticiones al servicio local de metadatos, puerto MySQL ni rutas /api/.
-- Revisión de los archivos preparados: excluidos SQL originales, configuración del editor, .env privados, dependencias y capturas. Sin coincidencias de patrones de tokens GitHub, claves privadas o URI MySQL con contraseña. La plantilla .env.example no contiene secretos.
+Fecha: 27 de octubre de 2026. Estado: Firebase real configurado y sincronización en la nube verificada; publicación en curso; acceso interactivo Google reservado al primer uso del propietario.
 
-## Límites y publicación verificada
+## Modelo y base original
 
-La cuenta local disponible es root; la sesión de extracción se limitó a lectura, pero no se modificaron sus privilegios. Se recomienda configurar una cuenta restringida existente mediante .env para futuras actualizaciones. No se accedió al almacén protegido ni al ERD visual de DBeaver.
+- Se conservaron 23 tablas, 174 columnas, 30 FK declaradas y las 259 etapas originales.
+- `public/esquema_erd.json` conserva el SHA-256 original: `17f5c49b36680f3bf9e27847c753a222a97e1a16038ef349e9d7b7e5cfaee856`.
+- No se consultó ni modificó MySQL durante este rediseño. No se descifraron credenciales de DBeaver.
 
-La exportación PDF usa el diálogo de impresión del navegador y representa la vista elegida, no toda la secuencia de diapositivas. La exportación PNG/SVG captura la vista actual. La distribución automática puede requerir ajustes manuales para diagramas densos.
+## Pruebas realizadas
 
-El propietario aprobó la publicación del inventario y seleccionó el repositorio existente castilloleongustavo-eng/electrogestion-erd-presentacion el 27 de octubre de 2026. Se conserva su commit inicial. La subida utilizó el conector GitHub autenticado, sin depender de credenciales de CLI. El propietario habilitó GitHub Pages con GitHub Actions.
+- `npm test`: 12 pruebas aprobadas. Incluyen integridad del esquema y relaciones, recorrido/restauración, versión del estado, reloj de reproducción, una única ruta global y cámara proporcional a diferentes resoluciones.
+- `npm run test:reglas`: 6 pruebas aprobadas contra Firebase Realtime Database Emulator, con usuarios anónimos, propietario y otro UID. Se verificaron permisos de lectura/escritura, protección de notas y autorización, rechazo de otras sesiones, borrado, revisiones antiguas, saltos, campos extra, comandos vencidos y valores fuera de rango.
+- `npm run test:sincronizacion`: prueba con Firebase Auth/RTDB emulados y tres contextos de Chromium aislados: control móvil, espectador en 1920×1080 y entrada tardía en 1280×720. Aprobó navegación, zoom, selección de entidad/relación, columnas, conexiones, notas privadas, incorporación tardía, recarga, desconexión/reconexión y reproducción automática. Se valida también el resaltado de campos en la prueba final.
+- Se comprobó por HTTP que un visitante no puede escribir el estado público ni leer notas. El estado público y el HTML del espectador no contienen la nota privada utilizada en la prueba.
+- La pantalla pública no contiene botones, inputs, selectores, textarea ni navegación administrativa. El control de 390 px no presenta desbordamiento horizontal.
+- Capturas de control móvil y proyección revisadas. Se guardan exclusivamente en `privado/`, junto con registros y credenciales aleatorias del emulador en memoria. No se publican.
+- TypeScript y compilación de producción aprobados; compilación especial de pruebas separada en `dist-pruebas/`. Vite informa de un bundle mayor de 500 kB; es una advertencia y no un error de compilación.
+- `npm audit`: cero vulnerabilidades después de fijar dependencias compatibles y corregir dependencias transitivas. Las versiones de app/app-compat se alinearon para compartir una única instancia del SDK Firebase.
 
-El flujo https://github.com/castilloleongustavo-eng/electrogestion-erd-presentacion/actions/runs/40585430505 terminó correctamente en su segundo intento: instalación, cinco pruebas, compilación y despliegue aprobados. El primer intento se había detenido porque Pages no estaba habilitado.
+## Lo que falta verificar
 
-La URL https://castilloleongustavo-eng.github.io/electrogestion-erd-presentacion/ devuelve HTTP 200. Se verificó con Chromium sobre Internet: recursos sin errores HTTP, ausencia de excepciones JavaScript, bienvenida, lienzo vacío, avance, retroceso, 23 entidades, 174 columnas, 30 relaciones, adaptación móvil de 390 px y ausencia de peticiones a localhost, 127.0.0.1 o puertos locales de MySQL/backend. El código desplegado corresponde al commit 8e82d2be5c6c261169265dbe637d57c59136c925. Las capturas de verificación permanecen excluidas en privado/.
+El propietario autenticó Firebase CLI con su cuenta Google. Se verificó que la aplicación web pertenece a electrogestion-erd y que el JSON coincide con la configuración oficial. La base estaba vacía y las reglas originales denegaban todo; se conservaron como respaldo privado. Google estaba habilitado y los dominios localhost y GitHub Pages ya autorizados. Se registró únicamente la cuenta Google verificada del propietario, se asignó su UID al control exclusivo, se aplicaron las reglas y se compararon por lectura directa con las revisadas. Se inicializó exclusivamente sesiones/electrogestion/publico. No se habilitó facturación ni se modificaron roles IAM.
+
+La prueba adicional con tres navegadores aislados contra Firebase real pasó: avance, retroceso, zoom, selección de entidad/campo/relación, visibilidades, incorporación tardía, recarga, desconexión/reconexión, reproducción y diagrama completo. Los comandos de esta prueba procedían del cliente administrativo autorizado; no se presentan como clics del panel de control. La escritura anónima y las lecturas de notas y autorización fueron rechazadas con HTTP 401. El estado público no contenía la nota de prueba, eliminada tras verificarla. La sesión quedó reiniciada. El propietario indicó continuar con la publicación y entrega de los dos enlaces. El acceso Google y una acción del panel en su navegador se comprobarán en el primer uso y no se presentan como una prueba ya realizada. No se ha probado un teléfono físico en una red móvil distinta.
+
+Se continúa el despliegue autorizado en el repositorio existente. Las rutas se comprobarán sobre GitHub Pages antes de confirmar que quedaron publicadas. El validador estructural acepta el JSON proporcionado; esto no sustituye la comprobación de reglas, identidad y sincronización del proyecto real.
+
+Consultar `PUESTA_EN_MARCHA_FIREBASE.md` para los accesos necesarios y la comprobación real. El inventario del rediseño fue preparado y el propietario indicó continuar hasta publicar y entregar los dos enlaces.
