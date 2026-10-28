@@ -2,7 +2,6 @@ import { toPng, toSvg } from "html-to-image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
-  ArrowLeft,
   ArrowRight,
   Play,
   Pause,
@@ -300,6 +299,12 @@ export function Control({
                 bloqueado={!conectado}
                 centrarBloqueado={ocupado}
                 centrar={() => void enviar({ tipo: "ajustar" })}
+                navegacion={{
+                  anterior: () => void enviar({ tipo: "anterior" }),
+                  siguiente: () => void enviar({ tipo: "siguiente" }),
+                  anteriorBloqueado: ocupado || paso === 0,
+                  siguienteBloqueado: ocupado || paso === etapas.length - 1,
+                }}
               />
               {estado.pantalla === "inicio" && (
                 <div className="previa-inicio">
@@ -339,21 +344,6 @@ export function Control({
                   : "En pausa"}
               </span>
             </header>
-            <div className="navegacion-grande">
-              <button
-                disabled={ocupado || paso === 0}
-                onClick={() => void enviar({ tipo: "anterior" })}
-              >
-                <ArrowLeft size={20} /> Anterior
-              </button>
-              <button
-                className="boton-principal"
-                disabled={ocupado || paso === etapas.length - 1}
-                onClick={() => void enviar({ tipo: "siguiente" })}
-              >
-                Siguiente <ArrowRight size={20} />
-              </button>
-            </div>
             <div className="acciones-reproduccion">
               <button
                 disabled={ocupado}

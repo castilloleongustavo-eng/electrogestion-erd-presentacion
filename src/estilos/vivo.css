@@ -962,6 +962,8 @@
 }
 .controles-vista {
   display: flex;
+  flex-wrap: wrap;
+  max-width: calc(100% - 20px);
   align-items: center;
   gap: 2px;
   padding: 5px;
@@ -1110,6 +1112,9 @@
   font-size: 11px;
 }
 @media (max-width: 760px) {
+  .controles-vista output {
+    display: none;
+  }
   .controles-vista button {
     width: 44px;
     height: 44px;

@@ -32,6 +32,7 @@ type PropsDiagrama = {
   bloqueado?: boolean;
   camaraPendiente?: boolean;
   centrarBloqueado?: boolean;
+  navegacion?: Parameters<typeof ControlesVista>[0]["navegacion"];
 };
 const nodeTypes = { entidad: Entidad };
 const colores = ["#b4ee87", "#82c5ff", "#c2a5ff", "#ffca83", "#81ddd0"];
@@ -54,6 +55,7 @@ function Lienzo({
   bloqueado = false,
   camaraPendiente = false,
   centrarBloqueado = false,
+  navegacion,
 }: PropsDiagrama) {
   const flujo = useReactFlow();
   const contenedor = useRef<HTMLDivElement>(null);
@@ -335,6 +337,7 @@ function Lienzo({
             centrar={() => centrar?.()}
             bloqueado={!habilitado}
             centrarBloqueado={centrarBloqueado}
+            navegacion={navegacion}
           />
         )}
       </ReactFlow>

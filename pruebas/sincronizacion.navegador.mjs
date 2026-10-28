@@ -168,6 +168,9 @@ try {
     control.getByRole("button", { name: "Siguiente", exact: true }).click(),
   );
   await expect.poll(paso).toBe("1");
+  await expect(control.locator(".controles-vista").getByRole("button", { name: "Anterior", exact: true })).toHaveCount(1);
+  await expect(control.locator(".controles-vista").getByRole("button", { name: "Siguiente", exact: true })).toHaveCount(1);
+  await expect(control.locator(".navegacion-control").getByRole("button", { name: /^(Anterior|Siguiente)$/ })).toHaveCount(0);
   await cambiar(() =>
     control.getByRole("button", { name: "Siguiente", exact: true }).click(),
   );

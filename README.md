@@ -61,7 +61,7 @@ La reconexión recupera el último estado del servidor. Mientras una pantalla es
 
 1. Abrir `#/control` e iniciar sesión con Google. Si Firebase reconoce la cuenta pero el UID no coincide con el autorizado, el control sigue bloqueado y no se consultan notas.
 2. Inicializar la única sesión si aún no tiene estado. Abrir `#/presentacion` en el proyector y compartir ese enlace con el público.
-3. Usar Siguiente, Anterior, selector de etapas, reproducción, pausa y reinicio. Flechas y espacio también funcionan fuera de campos y botones.
+3. Usar las flechas Anterior y Siguiente en la barra flotante del diagrama, junto a + y −. El selector de etapas, reproducción, pausa y reinicio permanecen debajo del contexto. Flechas del teclado y espacio también funcionan fuera de campos y botones.
 4. Buscar y enfocar una entidad; elegir una relación o campo para resaltarlo globalmente. Ajustar zoom o centro según la composición.
 5. Activar columnas, relaciones, claves, enfoque, animaciones, explicaciones o indicador. Todos los espectadores reciben la misma configuración.
 6. Leer el contexto privado situado entre el diagrama y la navegación: número y nombre de etapa, descripción, objetivo y tablas/campos/relaciones reales. Cambia con la etapa; no se envía a la pantalla pública. La explicación técnica y el ejemplo siguen disponibles en el detalle desplegable.
