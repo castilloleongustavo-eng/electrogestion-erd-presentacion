@@ -319,7 +319,7 @@
   border-bottom: 1px solid #2f4035;
 }
 .previa-lienzo {
-  height: 340px;
+  height: clamp(380px, 48vh, 560px);
   position: relative;
   background:
     radial-gradient(ellipse at center, #263e2422, transparent), #111a1d;
@@ -826,7 +826,7 @@
     font-size: 27px;
   }
   .previa-lienzo {
-    height: 290px;
+    height: 360px;
   }
   .tarjeta-control > header > span {
     font-size: 8px;
@@ -884,7 +884,7 @@
     display: none;
   }
   .previa-lienzo {
-    height: 250px;
+    height: clamp(340px, 48svh, 480px);
   }
   .tarjeta-control {
     padding: 19px;
@@ -958,6 +958,175 @@
   .nota-acciones small {
     max-width: 170px;
     line-height: 1.6;
+  }
+}
+.controles-vista {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  background: #17241fed;
+  border: 1px solid #597349;
+  border-radius: 10px;
+  box-shadow: 0 5px 24px #0004;
+  backdrop-filter: blur(12px);
+}
+.controles-vista button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  color: #c7dfb2;
+  border-radius: 6px;
+  touch-action: manipulation;
+}
+.controles-vista button:hover:not(:disabled),
+.controles-vista button[aria-pressed="true"] {
+  background: #b4ee871c;
+  color: #c8f6a7;
+}
+.controles-vista button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.controles-vista output {
+  min-width: 42px;
+  text-align: center;
+  color: #a4bb94;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  padding: 0 4px;
+}
+.separador-vista {
+  height: 24px;
+  width: 1px;
+  background: #52644a;
+  margin: 0 3px;
+}
+.diagrama-vivo[data-interactivo="true"][data-mano="true"] .react-flow__pane {
+  cursor: grab;
+}
+.diagrama-vivo[data-interactivo="true"] .react-flow__pane.dragging {
+  cursor: grabbing;
+}
+.contexto-etapa > h3 {
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  margin: 0 0 14px;
+  overflow-wrap: anywhere;
+  color: #deebd3;
+}
+.descripcion-etapa {
+  color: #a7bca0;
+  font-size: 12px;
+  line-height: 1.9;
+  margin: 0;
+}
+.objetivo-etapa {
+  display: flex;
+  gap: 11px;
+  background: #b4ee8707;
+  border: 1px solid #48623b;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 18px 0;
+  color: #b4ee87;
+}
+.objetivo-etapa > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.objetivo-etapa strong {
+  font-size: 11px;
+  font-weight: 550;
+  color: #cbe5b7;
+}
+.objetivo-etapa p {
+  font-size: 11px;
+  color: #9fb893;
+  line-height: 1.8;
+  margin: 6px 0 0;
+}
+.destacados-etapa > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #a1bd8b;
+  margin-bottom: 12px;
+}
+.grupo-destacados {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 9px 0;
+  font-size: 10px;
+}
+.grupo-destacados > strong {
+  min-width: 63px;
+  flex-shrink: 0;
+  color: #839d78;
+  font-weight: 400;
+}
+.grupo-destacados > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+.grupo-destacados code {
+  padding: 5px 7px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 9px;
+  line-height: 1.5;
+  color: #bfd6ab;
+  background: #263725;
+  border: 1px solid #3c5534;
+  border-radius: 4px;
+}
+.detalle-tecnico-etapa {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #34482f;
+}
+.detalle-tecnico-etapa > summary {
+  cursor: pointer;
+  color: #90ad7c;
+  font-size: 10px;
+  padding: 6px 0;
+  min-height: 30px;
+}
+.detalle-tecnico-etapa .explicacion-viva {
+  padding: 15px 0 0;
+}
+.detalle-tecnico-etapa .explicacion-viva h2 {
+  font-size: 18px;
+}
+.detalle-tecnico-etapa .explicacion-viva p {
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .controles-vista button {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+  .controles-vista {
+    margin: 10px !important;
+  }
+  .contexto-etapa > header > span {
+    font-size: 8px;
+  }
+  .grupo-destacados {
+    display: block;
+  }
+  .grupo-destacados > strong {
+    display: block;
+    margin-bottom: 6px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

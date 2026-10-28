@@ -86,6 +86,7 @@ let codigoError;
 try {
   const controlador = await b.newContext({
       viewport: { width: 390, height: 844 },
+      hasTouch: true,
     }),
     espectador = await b.newContext({
       viewport: { width: 1920, height: 1080 },
@@ -148,6 +149,24 @@ try {
   );
   await expect.poll(paso).toBe("1");
   await expect(pantalla.locator(".fila")).toHaveCount(0);
+  // El contexto es privado y está situado entre el lienzo y la navegación.
+  await expect(control.getByTestId("titulo-contexto")).toHaveText(
+    /Etapa 2 de 259/,
+  );
+  assert.ok(
+    await control.evaluate(() => {
+      const columna = document.querySelector(".columna-principal");
+      return !!columna.querySelector(
+        ".vista-previa + .contexto-etapa + .navegacion-control",
+      );
+    }),
+  );
+  await expect(
+    control.getByText("Objetivo de la etapa", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    pantalla.locator(".contexto-etapa,.controles-vista"),
+  ).toHaveCount(0);
   await cambiar(() =>
     control.getByRole("button", { name: "Acercar zoom", exact: true }).click(),
   );
@@ -156,6 +175,145 @@ try {
     control.getByRole("button", { name: "Alejar zoom", exact: true }).click(),
   );
   assert.equal((await estado()).camara.zoom, 1);
+  const lienzoControl = control.locator(".previa-lienzo .diagrama-vivo");
+  await lienzoControl.scrollIntoViewIfNeeded();
+  const area = await lienzoControl.boundingBox();
+  assert.ok(area.height >= 340);
+  const antesArrastre = await estado();
+  await control.mouse.move(area.x + 12, area.y + 12);
+  await control.mouse.down();
+  await control.mouse.move(area.x + 65, area.y + 48, { steps: 24 });
+  await control.mouse.up();
+  await expect
+    .poll(async () => {
+      const e = await estado();
+      return (
+        Math.abs(e.camara.x - antesArrastre.camara.x) +
+        Math.abs(e.camara.y - antesArrastre.camara.y)
+      );
+    })
+    .toBeGreaterThan(0.01);
+  await expect(
+    control.getByRole("button", { name: "Centrar diagrama", exact: true }),
+  ).toBeEnabled();
+  await expect
+    .poll(async () =>
+      Number(
+        await pantalla.locator(".diagrama-vivo").getAttribute("data-revision"),
+      ),
+    )
+    .toBe((await estado()).revision);
+  assert.ok(
+    (await estado()).revision - antesArrastre.revision < 12,
+    "El arrastre debe agrupar movimientos, no escribir cada evento.",
+  );
+  await cambiar(() =>
+    control
+      .getByRole("button", { name: "Centrar diagrama", exact: true })
+      .click(),
+  );
+  assert.deepEqual((await estado()).camara, { x: 0.5, y: 0.5, zoom: 1 });
+  const mano = control.getByRole("button", {
+    name: "Herramienta de mano",
+    exact: true,
+  });
+  await mano.click();
+  await expect(mano).toHaveAttribute("aria-pressed", "false");
+  const sinMano = await estado();
+  await control.mouse.move(area.x + 12, area.y + 12);
+  await control.mouse.down();
+  await control.mouse.move(area.x + 65, area.y + 48, { steps: 10 });
+  await control.mouse.up();
+  await control.waitForTimeout(300);
+  assert.equal((await estado()).revision, sinMano.revision);
+  await mano.click();
+  const antesRueda = (await estado()).camara.zoom;
+  await control.mouse.move(area.x + area.width / 2, area.y + area.height / 3);
+  await control.mouse.wheel(0, -120);
+  await expect
+    .poll(async () => (await estado()).camara.zoom)
+    .toBeGreaterThan(antesRueda);
+  await expect(
+    control.getByRole("button", { name: "Centrar diagrama", exact: true }),
+  ).toBeEnabled();
+  await cambiar(() =>
+    control
+      .getByRole("button", { name: "Centrar diagrama", exact: true })
+      .click(),
+  );
+  // Gestos táctiles reales del protocolo de Chromium: arrastre y pellizco.
+  const cdp = await controlador.newCDPSession(control);
+  await cdp.send("Emulation.setTouchEmulationEnabled", {
+    enabled: true,
+    maxTouchPoints: 2,
+  });
+  const centro = { x: area.x + area.width / 2, y: area.y + area.height / 3 };
+  const antesTacto = await estado();
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: area.x + 14, y: area.y + 14, id: 0 }],
+  });
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x: area.x + 58, y: area.y + 38, id: 0 }],
+  });
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+  await expect
+    .poll(async () => {
+      const e = await estado();
+      return (
+        Math.abs(e.camara.x - antesTacto.camara.x) +
+        Math.abs(e.camara.y - antesTacto.camara.y)
+      );
+    })
+    .toBeGreaterThan(0.01);
+  await expect(
+    control.getByRole("button", { name: "Centrar diagrama", exact: true }),
+  ).toBeEnabled();
+  await cambiar(() =>
+    control
+      .getByRole("button", { name: "Centrar diagrama", exact: true })
+      .click(),
+  );
+  const antesPellizco = (await estado()).camara.zoom;
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [
+      { x: centro.x - 25, y: centro.y, id: 0 },
+      { x: centro.x + 25, y: centro.y, id: 1 },
+    ],
+  });
+  for (const distancia of [32, 40, 50])
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [
+        { x: centro.x - distancia, y: centro.y, id: 0 },
+        { x: centro.x + distancia, y: centro.y, id: 1 },
+      ],
+    });
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+  await expect
+    .poll(async () => (await estado()).camara.zoom)
+    .toBeGreaterThan(antesPellizco);
+  await expect(
+    control.getByRole("button", { name: "Centrar diagrama", exact: true }),
+  ).toBeEnabled();
+  // El espectador no puede provocar escrituras ni navegar su propio lienzo.
+  const espectadorAntes = await estado();
+  await pantalla.mouse.move(200, 200);
+  await pantalla.mouse.wheel(0, -200);
+  await pantalla.mouse.down();
+  await pantalla.mouse.move(280, 250);
+  await pantalla.mouse.up();
+  await pantalla.keyboard.press("ArrowRight");
+  await pantalla.waitForTimeout(300);
+  assert.equal((await estado()).revision, espectadorAntes.revision);
   await cambiar(() =>
     control
       .locator(".entidades-control button")

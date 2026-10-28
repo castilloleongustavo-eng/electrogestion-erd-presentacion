@@ -51,7 +51,7 @@ Cada comando usa una transacción con revisión esperada e incremento de uno, si
 
 La reproducción comparte un paso de origen y la hora de servidor. Cada pantalla calcula la etapa actual usando el desfase del reloj de Firebase, incluida la incorporación tardía. El reloj continúa aunque el control se cierre. Los cambios visuales conservan la reproducción; navegar manualmente o pausar la detiene. No se escribe una nueva etapa por cada espectador.
 
-La cámara transmite centro normalizado y un factor de zoom sobre el encuadre de cada pantalla. Nunca transmite dimensiones de teléfono como si fueran dimensiones del proyector. Seleccionar una entidad o una relación centra el mismo contenido en todas las pantallas. Las posiciones del modelo permanecen constantes al revelar columnas.
+La cámara transmite centro normalizado y un factor de zoom sobre el encuadre de cada pantalla. En el control, los botones flotantes +, −, mano y centrar están sobre el lienzo. La mano permite arrastrar con mouse o tacto; la rueda y el pellizco ajustan el zoom. Los movimientos se agrupan cada 200 ms, con una sola petición en curso y confirmación del punto final. La navegación espera al cierre del gesto para evitar carreras entre el último movimiento y una orden de centrado o de etapa. Nunca transmite dimensiones de teléfono como si fueran dimensiones del proyector. Seleccionar una entidad o una relación centra el mismo contenido en todas las pantallas. Las posiciones del modelo permanecen constantes al revelar columnas.
 
 La reconexión recupera el último estado del servidor. Mientras una pantalla está desconectada no puede recibir órdenes nuevas; al regresar se alinea de nuevo. No se promete latencia cero ni control con Internet caído.
 
@@ -62,8 +62,9 @@ La reconexión recupera el último estado del servidor. Mientras una pantalla es
 3. Usar Siguiente, Anterior, selector de etapas, reproducción, pausa y reinicio. Flechas y espacio también funcionan fuera de campos y botones.
 4. Buscar y enfocar una entidad; elegir una relación o campo para resaltarlo globalmente. Ajustar zoom o centro según la composición.
 5. Activar columnas, relaciones, claves, enfoque, animaciones, explicaciones o indicador. Todos los espectadores reciben la misma configuración.
-6. Escribir notas por etapa y guardarlas expresamente. El aviso indica si quedan cambios sin guardar. Cambiar de etapa sin guardarlas descarta el borrador local.
-7. Exportar PNG/SVG captura únicamente el diagrama de la vista previa; no captura las notas ni el resto del panel. El modo pantalla completa del control afecta al dispositivo del presentador. El navegador del proyector ocupa su viewport y puede ponerse en pantalla completa con la función del propio navegador.
+6. Leer el contexto privado situado entre el diagrama y la navegación: número y nombre de etapa, descripción, objetivo y tablas/campos/relaciones reales. Cambia con la etapa; no se envía a la pantalla pública. La explicación técnica y el ejemplo siguen disponibles en el detalle desplegable.
+7. Escribir notas por etapa y guardarlas expresamente. El aviso indica si quedan cambios sin guardar. Cambiar de etapa sin guardarlas descarta el borrador local.
+8. Exportar PNG/SVG captura únicamente el diagrama de la vista previa; no captura las notas ni el resto del panel. El modo pantalla completa del control afecta al dispositivo del presentador. El navegador del proyector ocupa su viewport y puede ponerse en pantalla completa con la función del propio navegador.
 
 Las credenciales de Google no se almacenan en el código. El acceso de pruebas con correo/contraseña está limitado a una compilación especial, dominio loopback y proyecto demo, y autentica contra el emulador. No es un acceso alternativo en producción.
 

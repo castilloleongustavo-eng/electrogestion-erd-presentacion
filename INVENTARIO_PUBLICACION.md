@@ -18,6 +18,7 @@ Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-er
 - package.json
 - package-lock.json
 - pruebas/estado.test.mjs
+- pruebas/contexto.test.mjs
 - pruebas/firebase.reglas.mjs
 - pruebas/modelo.test.mjs
 - pruebas/sincronizacion.navegador.mjs
@@ -33,6 +34,8 @@ Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-er
 - servidor/metadatos.mjs
 - src/componentes/animaciones/Entidad.tsx
 - src/componentes/controles/Notas.tsx
+- src/componentes/controles/ContextoEtapa.tsx
+- src/componentes/controles/ControlesVista.tsx
 - src/componentes/diagrama/Diagrama.tsx
 - src/componentes/diagrama/Explicacion.tsx
 - src/componentes/diagrama/geometria.mjs
@@ -41,6 +44,7 @@ Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-er
 - src/estilos/vivo.css
 - src/main.tsx
 - src/modelos/esquema.ts
+- src/modelos/contexto.mjs
 - src/modelos/estado.mjs
 - src/modelos/estado.ts
 - src/modelos/presentacion.mjs
@@ -49,6 +53,7 @@ Destino: el mismo repositorio público castilloleongustavo-eng/electrogestion-er
 - src/servicios/autenticacion/usePresentador.ts
 - src/servicios/sincronizacion/firebase.ts
 - src/servicios/sincronizacion/useSesion.ts
+- src/servicios/sincronizacion/useCamaraCompartida.ts
 - src/vite-env.d.ts
 - tsconfig.json
 - VERIFICACION.md
@@ -70,4 +75,6 @@ Las notas reales se alojarán en privado/electrogestion/notas dentro de RTDB, co
 
 No se crea un repositorio ni una segunda sesión. El Firebase real electrogestion-erd quedó configurado con el único UID autorizado y las reglas verificadas. En futuras modificaciones deben conservarse reglas y datos ajenos a esta aplicación. Se probaron sesiones de navegador independientes contra la nube; no se probó directamente un teléfono físico en otra red. Ver PUESTA_EN_MARCHA_FIREBASE.md y VERIFICACION.md.
 
-Total de archivos preparados: 47.
+La actualización del panel añade controles flotantes, cámara compartida con coordenadas normalizadas y contexto privado de la etapa. No cambia las reglas, la autenticación, el esquema ni las etapas. Se verificaron mouse y gestos táctiles emulados en navegadores independientes.
+
+Total de archivos preparados: 52.

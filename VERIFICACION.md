@@ -41,3 +41,11 @@ Consultar `PUESTA_EN_MARCHA_FIREBASE.md` para los accesos necesarios y la compro
 - Las pruebas y capturas con credenciales o contexto administrativo permanecen excluidas en privado/. No se modificó MySQL, no se habilitó facturación y no se crearon sesiones ni repositorios adicionales.
 
 El uso desde un teléfono físico en una red móvil distinta no se comprobó directamente; el sistema publicado utiliza Firebase por Internet y no depende de la computadora de desarrollo.
+## Actualización de controles flotantes y contexto privado
+
+- 16 pruebas del modelo, estado, contexto y geometría aprobadas. Las 259 etapas tienen descripción y objetivo; los nombres destacados se validan contra el esquema real. La cámara conserva centro y factor relativo al pasar de 390 px a resoluciones de proyector, sin coordenadas de pantalla en Firebase.
+- Prueba completa de navegadores con Firebase Auth/RTDB emulados aprobada. Incluye zoom con +/−, activación y desactivación de mano, arrastre de mouse, rueda, arrastre táctil y pellizco mediante eventos de Chromium. Los movimientos se reflejaron en el espectador y se agruparon para evitar una escritura por evento. Se comprobó el centrado después de finalizar el gesto y su confirmación.
+- El contexto privado se comprobó entre la vista previa y la navegación. La pantalla pública no contiene ese contexto ni controles y no puede escribir al usar gestos o flechas.
+- Se ejecutaron también las comprobaciones existentes de etapas, relaciones, notas privadas, acceso, recarga, entrada tardía, desconexión, reconexión y reproducción.
+- No se modificaron las reglas Firebase, el sistema de autenticación, la estructura del estado, la sesión electrogestion, el generador de etapas ni esquema_erd.json. No se consultó ni modificó MySQL. Los servicios reales no se reconfiguraron para este ajuste de interfaz.
+- Tacto comprobado mediante emulación de eventos del navegador; no se afirma una prueba en teléfono físico.

@@ -122,6 +122,11 @@ export function useSesion(servicios: Servicios) {
           throw Error(
             "El estado cambió en otro control. Espera a sincronizar e inténtalo de nuevo.",
           );
+        const confirmado = r.snapshot.val() as EstadoPublico;
+        setEstado(
+          (actual) => aceptarVersion(actual, confirmado) as EstadoPublico,
+        );
+        return confirmado;
       } catch (e) {
         const mensaje =
           e instanceof Error ? e.message : "No se pudo confirmar el cambio.";

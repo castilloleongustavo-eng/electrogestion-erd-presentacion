@@ -1,5 +1,5 @@
 import { toPng, toSvg } from "html-to-image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {
   ArrowLeft,
@@ -7,9 +7,6 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Maximize,
-  ZoomIn,
-  ZoomOut,
   Layers,
   Focus,
   Database,
@@ -31,7 +28,8 @@ import type { Sesion } from "../../servicios/sincronizacion/useSesion";
 import { usePresentador } from "../../servicios/autenticacion/usePresentador";
 import { generarEtapas } from "../../modelos/presentacion.mjs";
 import { Diagrama } from "../../componentes/diagrama/Diagrama";
-import { Explicacion } from "../../componentes/diagrama/Explicacion";
+import { ContextoEtapa } from "../../componentes/controles/ContextoEtapa";
+import { useCamaraCompartida } from "../../servicios/sincronizacion/useCamaraCompartida";
 import { Notas } from "../../componentes/controles/Notas";
 export function Control({
   esquema,
@@ -53,7 +51,12 @@ export function Control({
     [clave, setClave] = useState("");
   const etapas = useMemo(() => generarEtapas(esquema), [esquema]),
     { estado, paso, conectado, enviando } = sesion;
-  const ocupado = !conectado || enviando;
+  const camaraCompartida = useCamaraCompartida(sesion);
+  const ocupado = !conectado || enviando || camaraCompartida.pendiente;
+  const seleccionarColumna = useCallback(
+    (tabla: string, columna: Columna) => setDetalle({ tabla, columna }),
+    [],
+  );
   async function enviar(cambio: Cambio | null) {
     setMensaje("");
     try {
@@ -290,7 +293,13 @@ export function Control({
                 estado={estado}
                 paso={paso}
                 previa
-                seleccionar={(tabla, columna) => setDetalle({ tabla, columna })}
+                seleccionar={seleccionarColumna}
+                cambiarCamara={camaraCompartida.cambiar}
+                interaccionCamara={camaraCompartida.interaccion}
+                camaraPendiente={camaraCompartida.pendiente}
+                bloqueado={!conectado}
+                centrarBloqueado={ocupado}
+                centrar={() => void enviar({ tipo: "ajustar" })}
               />
               {estado.pantalla === "inicio" && (
                 <div className="previa-inicio">
@@ -314,6 +323,12 @@ export function Control({
               />
             </div>
           </section>
+          <ContextoEtapa
+            esquema={esquema}
+            estado={estado}
+            paso={paso}
+            detalle={detalle}
+          />
           <section className="tarjeta-control navegacion-control">
             <header>
               <ArrowRight size={17} />
@@ -324,13 +339,6 @@ export function Control({
                   : "En pausa"}
               </span>
             </header>
-            <div className="etapa-actual">
-              <span>{String(paso + 1).padStart(2, "0")}</span>
-              <div>
-                <small>ETAPA ACTUAL</small>
-                <h3>{etapa.titulo}</h3>
-              </div>
-            </div>
             <div className="navegacion-grande">
               <button
                 disabled={ocupado || paso === 0}
@@ -370,6 +378,12 @@ export function Control({
               >
                 <RotateCcw size={17} /> Reiniciar
               </button>
+              <button
+                disabled={ocupado}
+                onClick={() => void enviar({ tipo: "completo" })}
+              >
+                <Layers size={17} /> Diagrama completo
+              </button>
             </div>
             <label className="selector-etapa">
               Ir a una etapa
@@ -388,86 +402,6 @@ export function Control({
                 ))}
               </select>
             </label>
-          </section>
-          <section className="tarjeta-control">
-            <header>
-              <Focus size={17} />
-              <h2>Diagrama y zoom</h2>
-              <span>Proporcional a cada pantalla</span>
-            </header>
-            <div className="herramientas-control">
-              <button
-                disabled={ocupado}
-                onClick={() =>
-                  void enviar({
-                    tipo: "camara",
-                    camara: { zoom: Math.min(4, estado.camara.zoom / 0.8) },
-                  })
-                }
-                aria-label="Acercar zoom"
-              >
-                <ZoomIn size={18} /> Acercar
-              </button>
-              <button
-                disabled={ocupado}
-                onClick={() =>
-                  void enviar({
-                    tipo: "camara",
-                    camara: { zoom: Math.max(0.25, estado.camara.zoom * 0.8) },
-                  })
-                }
-                aria-label="Alejar zoom"
-              >
-                <ZoomOut size={18} /> Alejar
-              </button>
-              <button
-                disabled={ocupado}
-                onClick={() => void enviar({ tipo: "ajustar" })}
-              >
-                <Maximize size={18} /> Ajustar a pantalla
-              </button>
-              <button
-                disabled={ocupado}
-                onClick={() => void enviar({ tipo: "completo" })}
-              >
-                <Layers size={18} /> Diagrama completo
-              </button>
-            </div>
-            <div className="camara-posicion">
-              <span>Centro del encuadre</span>
-              {(["x", "y"] as const).map((eje) => (
-                <label key={eje}>
-                  {eje === "x" ? "Horizontal" : "Vertical"}
-                  <input
-                    aria-label={`Centro ${eje === "x" ? "horizontal" : "vertical"}`}
-                    type="range"
-                    min="0"
-                    max="1"
-                    step=".05"
-                    defaultValue={estado.camara[eje]}
-                    key={`${eje}-${estado.camara[eje]}`}
-                    disabled={ocupado}
-                    onPointerUp={(e) =>
-                      void enviar({
-                        tipo: "camara",
-                        camara: { [eje]: Number(e.currentTarget.value) },
-                      })
-                    }
-                    onKeyUp={(e) => {
-                      if (
-                        ["ArrowLeft", "ArrowRight", "Home", "End"].includes(
-                          e.key,
-                        )
-                      )
-                        void enviar({
-                          tipo: "camara",
-                          camara: { [eje]: Number(e.currentTarget.value) },
-                        });
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
           </section>
           <section className="tarjeta-control">
             <header>
@@ -682,26 +616,6 @@ export function Control({
                 ))}
               </select>
             </label>
-          </section>
-          <section className="tarjeta-control contexto-control">
-            <header>
-              <BookOpen size={17} />
-              <h2>Contexto de la etapa</h2>
-            </header>
-            <Explicacion esquema={esquema} estado={estado} paso={paso} />
-            {detalle && (
-              <div className="detalle-control">
-                <h3>
-                  {detalle.tabla}.{detalle.columna.nombre}
-                </h3>
-                <p>
-                  {detalle.columna.tipo} ·{" "}
-                  {detalle.columna.nulo ? "Permite NULL" : "Obligatorio"} ·{" "}
-                  {detalle.columna.pk ? "PK " : ""}
-                  {detalle.columna.fk ? "FK" : ""}
-                </p>
-              </div>
-            )}
           </section>
         </div>
       </div>
